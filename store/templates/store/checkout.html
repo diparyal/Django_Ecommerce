@@ -69,8 +69,8 @@
                 <h5>Total:   Rs.{{ order.get_cart_total }}</h5>
             </div>
         </div>
-
     </div>
+
 
 <script type="text/javascript">
     var shipping = '{{order.shipping}}'
@@ -78,7 +78,7 @@
     var total = '{{ order.get_cart_total | floatformat:2 }}'
 
     // Error occur at payment submit due to csrf token(NUll value) in Incognito mode so,
-    csrftoken = form.getElementByTagName('input')[0].value
+    // csrftoken = form.getElementByTagName('input')[0].value
 
     if (user != 'AnonymousUser'){
         document.getElementById('user-info').innerHTML = ''
@@ -139,10 +139,13 @@
     .then((data) => {
         console.log('Success:' , data);
         alert('Transaction complete');
+
+        cart = {}
+        document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+
         window.location.href = "{% url 'store' %}"
     })
     }
-
 
 </script>
 
