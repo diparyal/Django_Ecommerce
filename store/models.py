@@ -14,9 +14,21 @@ class Customer(models.Model):
 
 
 class Product(models.Model):
+    product_status = (
+        ('N',"New"),
+        ('T',"Trending"),
+        ('X','Excel'),
+            )
+    category_type = (
+        ("Men","Men"),
+        ("Women","Women"),
+        ("Electronic","Electronic"),
+        ("Book","Book"),)
+
     name = models.CharField(max_length=200)
     price = models.FloatField()
-    digital = models.BooleanField(default=False,null=True, blank=True)
+    category = models.CharField(max_length=10,choices=category_type,null=True, blank=True)
+    status = models.CharField(max_length=1,choices= product_status,null=True, blank=True)
     description = models.TextField(null=True,blank = True)
     featured = models.ImageField(null=True, blank=True)
 
@@ -60,14 +72,14 @@ class Order(models.Model):
     def __str__(self):
         return str(self.id)
         
-    @property
-    def shipping(self):
-        shipping = False
-        orderitems = self.orderitem_set.all()
-        for i in orderitems:
-            if i.product.digital == False:
-                shipping = True
-        return shipping
+    # @property
+    # def shipping(self):
+    #     shipping = False
+    #     orderitems = self.orderitem_set.all()
+    #     for i in orderitems:
+    #         if i.product.digital == False:
+    #             shipping = True
+    #     return shipping
 
     @property
     def get_cart_total(self):

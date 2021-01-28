@@ -1,23 +1,60 @@
 {% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
-    <div class="row">
-        {% for product in products %}
-        <div class="col-lg-3">
-            <img class="thumbnail" src="{{product.imageURL}}">
-            <div class="box-element product">
-                <h6><strong>{{ product.name }}</strong></h6>
-                <p>Rs.{{ product.price|floatformat:2}}</p>
-                <hr>
 
-                <button data-product={{ product.id }} data-action = "add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
-                <a class="btn btn-outline-success" href="{% url 'product_display' product.id %}">View</a>
-            </div>
-        </div>
-
-        {% endfor %}
-
+<div class="container-fluid my-2">
+<div id="carouselExampleFade" class=" container-fluid carousel slide carousel-fade" data-bs-ride="carousel">
+  <div class="carousel-inner carousel-fade">
+    <div class="carousel-item active" data-bs-interval="3000">
+    <img src="{% static 'images/samsung.jpg'%}" class="d-block w-100">
     </div>
+    <div class="carousel-item" data-bs-interval="3000">
+      <img src="{% static 'images/cool.jpg' %}" class="d-block w-100">
+    </div>
+    
+  </div>
+    <a class="carousel-control-prev" href="#carouselExampleFade" role="button" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleFade" role="button" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </a>
+
+</div>
+</div>
+
+
+<div class="container">
+<div class="row">
+    {% for product in products %}
+    <div class="col-xs-2 col-sm-2 col-md-3 my-2">
+        <img class="thumbnail" src="{{product.imageURL}}">
+        <div class="box-element product">
+            <h6><strong>{{ product.name }}</strong></h6>
+            <p>Rs.{{ product.price|floatformat:2}}</p>
+            <hr>
+
+            <button data-product={{ product.id }} data-action = "add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
+            <a class="btn btn-outline-success" href="{% url 'product_display' product.id %}">View</a>
+        </div>
+    </div>
+
+    {% endfor %}
+ </div>
+ </div>
+<script type="text/javascript">
+    $(document).ready(function(){
+
+$('#myCarousel').carousel({
+interval: 3000,
+})
+
+});
+</script>
+
+
 
 {% endblock content %}
 
