@@ -88,3 +88,17 @@ def processOrder(request):
 
 
     return JsonResponse('Payment submitted..', safe=False)
+
+
+
+def productDisplay(request,product_id):
+    prod = Product.objects.get( id = product_id)
+    val = ProductImages.objects.all()
+    print(val)
+    product_images = prod.productimages_set.all()
+    print(product_images)
+    # print(product_images)
+    # print(product_val.price)
+    context ={'product': prod, 'product_images': product_images}
+    return render(request, 'store/product_detail.html', context)
+
