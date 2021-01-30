@@ -4,11 +4,26 @@ import json
 import datetime
 from django.http import JsonResponse
 from .utils import cookieCart,cartData ,guestOrder
+from math import ceil
+
 # from django.views.decorators.csrf import csrf_exempt
 
 def store(request):
     products = Product.objects.all()
-    context = {'products':products}
+
+    allProds = []
+    catProds = Product.objects.values('category','id')
+
+    cats = {item['category'] for item in catProds}
+    for cat in cats:
+        prod = Product.objects.filter(category=cat)
+
+        n = len(prod)
+
+        nSlides = n // 4 + ceil((n / 4) - (n // 4))
+
+        allProds.append([prod,range(1,nSlides),nSlides])
+    context = {'products':products,'allProds':allProds}
     return render(request, 'store/store.html', context)
 
 def cart(request):

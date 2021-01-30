@@ -31,7 +31,7 @@
     {% for product in products %}
 
     <div class="col-xs-2 col-sm-2 col-md-3 my-2">
-        <img class="thumbnail" src="{{product.imageURL}}">
+    <img class="thumbnail" src="{{product.imageURL}}">
         <div class="box-element product">
             <h6><strong>{{ product.name }}</strong></h6>
             <p>Rs.{{ product.price|floatformat:2}}</p>
@@ -44,10 +44,107 @@
 
     {% endfor %}
  </div>
- </div>
+</div>
 
 
+<style>
+    .col-md-3 {
+        display: inline-block;
+        margin-left: -4px;
+    }
+
+    .col-md-3 img {
+        max-width: 230px;
+        height: 198px;
+    }
+
+    body .carousel-indicators li {
+        background-color: green;
+    }
+
+    body .carousel-indicators {
+        bottom: 0;
+    }
+
+    body .carousel-indicators .active {
+        background-color: orange;
+    }
+
+    body .carousel-control-prev-icon, body .carousel-control-next-icon {
+        background-color: blue;
+    }
+
+    .carousel-control-prev, .carousel-control-next {
+        top: auto;
+        bottom: auto;
+        padding-top: 201px
+    }
+
+    body .no-padding {
+        padding-left: 0;
+        padding-right: 0;
+    }
+</style>
 
 
-{% endblock content %}
+<div class="container">
+
+    <!-- Start Slide coding here -->
+    {% for product,range,nSlides in allProds %}
+    <h1 class="my-3">{{product.0.category}}</h1>
+    <div class="row">
+        <div id="demo{{forloop.counter}}" class="carousel slide my-3" data-ride="carousel">
+            <ul class="carousel-indicators">
+                <li data-target="#demo{{forloop.counter}}" data-slide-to="0" class="active"></li>
+                {% for i in range %}
+                <li data-target="#demo{{forloop.parentloop.counter}}" data-slide-to="{{i}}"></li>
+                {% endfor %}
+            </ul>
+
+            <div class="container carousel-inner no-padding">
+                <div class="carousel-item active">
+
+
+                    {% for i in product %}
+
+                    <div class="col-xs-3 col-sm-3 col-md-3">
+                        <div class="card" style="width: 18rem;">
+                            <img src={{i.imageURL}} class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">{{i.name}}</h5>
+                                <p class="card-text">{{i.description|slice:"0:60"}}....</p>
+                                <button id="pr{{i.id}}" class="btn btn-primary cart">Add to Cart</button>
+                                <a href="..">
+                                    <button  class="btn btn-primary cart">Quick View</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% if forloop.counter|divisibleby:4 and forloop.counter > 0 and not forloop.last%}
+                </div>
+
+                <div class="carousel-item">
+                    {% endif %}
+
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Slide left right control from here -->
+        <a class="carousel-control-prev" href="#demo{{forloop.counter}}" data-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+
+        </a>
+        <a class="carousel-control-next" href="#demo{{forloop.counter}}" data-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </a>
+
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}
 

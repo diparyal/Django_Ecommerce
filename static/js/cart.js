@@ -25,9 +25,11 @@ function addCookieItem(productId,action){
     if (action == 'add'){
         if (cart[productId] == undefined){
             cart[productId] = {'quantity':1}
+            // document.getElementById("my_cart").innerHTML =1
         }else{
             console.log("This is",cart)
             cart[productId]["quantity"] += 1
+            // document.getElementById("my_cart").innerHTML= cart[productId]["quantity"]
             console.log(cart[productId])
             console.log(cart[productId]["quantity"])
         }
@@ -35,14 +37,15 @@ function addCookieItem(productId,action){
 
     if (action == 'remove'){
         console.log(cart)
-        console.log(cart[productId]["quantity"])
-        cart[productId]["quantity"] -= 1
-        }
+        console.log(cart[productId])
+        cart[productId]['quantity'] -= 1
+        document.getElementById("my_cart").innerHTML= cart[productId]["quantity"]
+        
         if (cart[productId]["quantity"] <=0 ){
             delete cart[productId]
         }
     
-
+    }
     document.cookie = "cart=" + JSON.stringify(cart) + ";domain=;path=/";
     console.log('Cart:',cart)
 }

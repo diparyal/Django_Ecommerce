@@ -111,7 +111,8 @@
         <a href="{% url 'cart' %}">
         <!-- <img  id="cart-icon" src="{% static 'images/cart.png' %}"> -->
         <i class="bi bi-cart4" style="font-size:2rem;margin-right:2px"></i>
-        <span class="translate-middle badge border border-light rounded-circle bg-danger p-2">10</span>
+        <!-- <span id="my_cart" class="translate-middle badge border border-light rounded-circle bg-danger p-2">10</span> -->
+        <span id="my_cart" class="translate-middle badge border border-light rounded-circle bg-danger p-2"></span>
         </a>
 
         <!-- <p id="cart-total">0</p> -->
@@ -124,6 +125,7 @@
 
 </head>
 <body>
+  
     <div>
     {% block content %}
 
