@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from . models import *
+from . serializers import *
 import json
 import datetime
 from django.http import JsonResponse
 from .utils import cookieCart,cartData ,guestOrder
-from math import ceil
+from rest_framework import generics
+
 
 # from django.views.decorators.csrf import csrf_exempt
 
@@ -105,4 +107,39 @@ def productDisplay(request,product_id):
     # print(product_val.price)
     context ={'product': prod, 'product_images': product_images}
     return render(request, 'store/product_detail.html', context)
+
+class ProductViewSet(generics.ListCreateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+class OrderViewSet(generics.ListCreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+class OrderDetailSet(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+class ProductImgViewSet(generics.ListCreateAPIView):
+    queryset = ProductImages.objects.all()
+    serializer_class = ProductImgSerializer
+
+class ProImgSet(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ProductImages.objects.all()
+    serializer_class = ProductImgSerializer
+
+
+class OrderItemViewSet(generics.ListCreateAPIView):
+    queryset = OrderItem.objects.all()
+    serializer_class = OrderItemSerializer
+
+class ShippingViewSet(generics.ListCreateAPIView):
+    queryset = ShippingAddress.objects.all()
+    serializer_class = ShippingSerializer
+
+
 

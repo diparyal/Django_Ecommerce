@@ -28,7 +28,7 @@ class Product(models.Model):
     name = models.CharField(max_length=200)
     price = models.FloatField()
     category = models.CharField(max_length=10,choices=category_type,null=True, blank=True)
-    subCategory = models.CharField(max_length=50,null=True, blank=True)
+    # subCategory = models.CharField(max_length=50,null=True, blank=True)
     status = models.CharField(max_length=1,choices= product_status,null=True, blank=True)
     description = models.TextField(null=True,blank = True)
     featured = models.ImageField(null=True, blank=True)
