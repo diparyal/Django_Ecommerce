@@ -17,10 +17,13 @@
     <!-- <script type="text/javaThe JSON.stringify() method converts a JavaScript object or value to a JSON string, optionally replacing values if a replacer function is specified or optionally including only the specified properties if a replacer array is specified.script" src="{% static 'js/cart.js' %}"></script> -->
     <script type="text/javascript">
       var user = '{{ request.user }}'
+      var value
+      // var quantity
 
     function getCookie(name) {
-      let val = document.cookie.split('; ').find(row => row.startsWith(`${name}=`))
-      console.log(val)
+      val = document.cookie.split('; ').find(row => row.startsWith(`${name}=`))
+      // value = val.split('=')[1]
+      // console.log(value)
       if (val){
       // console.log(document.cookie.split('; ').find(row => row.startsWith(`${name}=`)).split('=')[1])
         return document.cookie.split('; ').find(row => row.startsWith(`${name}`)).split('=')[1]
@@ -39,6 +42,12 @@
       // Cart value cannot be a object it need to be a single value so JSON.stringify() give key-value pair
       document.cookie = "cart=" + JSON.stringify(cart) + ";domain=;path=/";
     }
+
+    var quantity = getCookie('quantity')
+    if(quantity == undefined){
+      document.cookie = "quantity=" + 0 + "path=/";
+    }
+
     console.log("cart:"+cart)
 
 
@@ -157,7 +166,7 @@
         <!-- <img  id="cart-icon" src="{% static 'images/cart.png' %}"> -->
         <i class="bi bi-cart4" style="font-size:2rem;margin-right:2px"></i>
         <!-- <span id="my_cart" class="translate-middle badge border border-light rounded-circle bg-danger p-2">10</span> -->
-        <span id="my_cart" class="translate-middle badge border border-light rounded-circle bg-danger p-2"></span>
+        <span id="my_cart" class="translate-middle badge border border-light rounded-circle bg-danger p-2">{{ item.quantity }}</span>
         </a>
 
         <!-- <p id="cart-total">0</p> -->

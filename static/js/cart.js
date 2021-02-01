@@ -7,8 +7,6 @@ for (i = 0; i < updateBtns.length; i++) {
         var productId = this.dataset.product
         var action = this.dataset.action
         console.log('productId:', productId, 'Action:', action)
-        console.log("User:",user)
-
         if (user == 'AnonymousUser'){
             addCookieItem(productId,action)
         }else{
@@ -19,18 +17,38 @@ for (i = 0; i < updateBtns.length; i++) {
 }
 // }
 
+
+
 function addCookieItem(productId,action){
-    console.log('User is not authenticated')
+    console.log("User:",user)
 
     if (action == 'add'){
         if (cart[productId] == undefined){
             cart[productId] = {'quantity':1}
-            // document.getElementById("my_cart").innerHTML =1
+            if (quantity== 0){
+                quantity =1
+            }else{
+                quantity = quantity + 1 }
+                document.cookie = "quantity="+ quantity
+            document.getElementById("my_cart").innerHTML = quantity
         }else{
-            console.log("This is",cart)
+            console.log("This is",quantity)
             cart[productId]["quantity"] += 1
+            // for (i= 0 ; cart.length; i++){
+            //     console.log("HEllo"+cart[i])
+            // }
+            // typeof(getCookie('cart')) Type is string
+            // var val= JSON.parse(getCookie('cart'))
+            // console.log(Object.values(JSON.parse(value)))
+
+            
             // document.getElementById("my_cart").innerHTML= cart[productId]["quantity"]
-            console.log(cart[productId])
+            console.log(typeof(quantity))
+            quantity = parseInt(quantity) + 1
+            // quantity = quantity + 1
+            console.log("quant"+quantity)
+            document.cookie = "quantity="+ quantity + ";path=/";
+            document.getElementById("my_cart").innerHTML= quantity
             console.log(cart[productId]["quantity"])
         }
     }
@@ -38,14 +56,15 @@ function addCookieItem(productId,action){
     if (action == 'remove'){
         console.log(cart)
         console.log(cart[productId])
-        cart[productId]['quantity'] -= 1
-        document.getElementById("my_cart").innerHTML= cart[productId]["quantity"]
+        cart[productId]["quantity"] -= 1
+        // document.getElementById("my_cart").innerHTML= cart[productId]["quantity"]
         
         if (cart[productId]["quantity"] <=0 ){
             delete cart[productId]
         }
     
     }
+
     document.cookie = "cart=" + JSON.stringify(cart) + ";domain=;path=/";
     console.log('Cart:',cart)
 }

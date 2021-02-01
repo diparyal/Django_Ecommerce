@@ -6,15 +6,24 @@ import datetime
 from django.http import JsonResponse
 from .utils import cookieCart,cartData ,guestOrder
 from rest_framework import generics
-
+import requests
 
 # from django.views.decorators.csrf import csrf_exempt
 
+
+
 def store(request):
+    # product_val = requests.get('http://127.0.0.1:8000/product/').json()
+    # product_trend = [item for item in product_val if item['status']=='T']
+    data = cartData(request)
+
+    cartItems = data['cartItems']
     products = Product.objects.all()
     Trend = Product.objects.filter(status="T")
+    # products = product_val
+    # Trend = product_trend
 
-    context = {'products':products,'Trend':Trend}
+    context = {'products':products,'Trend':Trend,'cartItems':cartItems}
     return render(request, 'store/store.html', context)
 
 def cart(request):
