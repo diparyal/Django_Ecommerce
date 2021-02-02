@@ -10,7 +10,7 @@ import requests
 from .forms import UserForm,loginForm
 
 from django import forms
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login,logout
 
 
 # from django.contrib.auth.forms import UserCreationForm
@@ -146,22 +146,6 @@ def user_login(request):
         login(request, user)
         if user:
             return redirect('store')
-    # if request.method == 'POST':
-    #     print("login :",request.POST)
-    #     # form = loginForm(request.POST)
-    #     useremail = request.POST['email']
-    #     password = request.POST['password']
-    #     if form.is_valid():
-    #         username = form.cleaned_data.get('username')
-    #         raw_password = form.cleaned_data.get('password1')
-    #         form.save()
-    #         # user = authenticate(username=username, password=raw_password)
-    #         # login(request, user)
-    #         return redirect('store')
-    # else:
-
-    # context = {}
-    # return render(request, 'store/login.html', context)
 
 
 def register(request):
@@ -176,6 +160,10 @@ def register(request):
     #     context = {'form' : form}
     #     return render(request, 'YOUR_APP/register.html', context)
 
+
+def user_logout(request):
+    logout(request)
+    return redirect("store")
 
 
 class ProductViewSet(generics.ListCreateAPIView):

@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -12,6 +14,11 @@ class Customer(models.Model):
 
         return self.name
 
+    @receiver(post_save, sender=User)
+    def update_profile_signal(sender, instance, created, **kwargs):
+        if created:     
+            Customer.objects.create(user=instance)
+        # instance.person.save()
 
 class Product(models.Model):
     product_status = (

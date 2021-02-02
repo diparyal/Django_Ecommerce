@@ -162,6 +162,8 @@
 
       {% if user.is_authenticated %}
 
+      <!-- <button class="btn btn-link" > logout</button>  -->
+      <a class="btn btn-link" href="{% url 'user_logout' %}" role="button">logout</a>
 
       {% else %}
 
