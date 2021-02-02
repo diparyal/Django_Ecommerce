@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from . models import *
 from . serializers import *
 import json
@@ -7,6 +7,14 @@ from django.http import JsonResponse
 from .utils import cookieCart,cartData ,guestOrder
 from rest_framework import generics
 import requests
+from .forms import UserForm,loginForm
+
+from django import forms
+from django.contrib.auth import authenticate,login
+
+
+# from django.contrib.auth.forms import UserCreationForm
+
 
 # from django.views.decorators.csrf import csrf_exempt
 
@@ -23,7 +31,16 @@ def store(request):
     # products = product_val
     # Trend = product_trend
 
-    context = {'products':products,'Trend':Trend,'cartItems':cartItems}
+    category = Product.objects.values_list('category', flat=True)
+
+    all_category_product = {}
+    for cat in category:
+        all_category_product[cat] = Product.objects.filter(category=cat)
+
+    # print(all_category_product)
+
+
+    context = {'products':products,'Trend':Trend,'cartItems':cartItems,'UserForm':UserForm(),'all_category_product':all_category_product,}
     return render(request, 'store/store.html', context)
 
 def cart(request):
@@ -100,10 +117,7 @@ def processOrder(request):
     state=data['shipping']['state'],
     zipcode=data['shipping']['zipcode'],
     )
-
-
     return JsonResponse('Payment submitted..', safe=False)
-
 
 
 def productDisplay(request,product_id):
@@ -117,9 +131,52 @@ def productDisplay(request,product_id):
     context ={'product': prod, 'product_images': product_images}
     return render(request, 'store/product_detail.html', context)
 
+
 def user_login(request):
-    context = {}
-    return render(request, 'store/login.html', context)
+    if request.method == 'POST':
+        print("logIN value:",request.POST)
+        username = request.POST['username']
+        password = request.POST['password']
+        
+        # username = form.cleaned_data.get('username')
+        # password = form.cleaned_data.get('password')
+        print(username,password)
+        user = authenticate(username=username, password=password)
+        print(user)
+        login(request, user)
+        if user:
+            return redirect('store')
+    # if request.method == 'POST':
+    #     print("login :",request.POST)
+    #     # form = loginForm(request.POST)
+    #     useremail = request.POST['email']
+    #     password = request.POST['password']
+    #     if form.is_valid():
+    #         username = form.cleaned_data.get('username')
+    #         raw_password = form.cleaned_data.get('password1')
+    #         form.save()
+    #         # user = authenticate(username=username, password=raw_password)
+    #         # login(request, user)
+    #         return redirect('store')
+    # else:
+
+    # context = {}
+    # return render(request, 'store/login.html', context)
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        print(request.POST)
+        if form.is_valid(): 
+            form.save()
+            return redirect('store')    
+    # else:
+    #     form = UserForm()
+    #     context = {'form' : form}
+    #     return render(request, 'YOUR_APP/register.html', context)
+
+
 
 class ProductViewSet(generics.ListCreateAPIView):
     queryset = Product.objects.all()
