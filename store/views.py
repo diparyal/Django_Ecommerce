@@ -117,6 +117,10 @@ def productDisplay(request,product_id):
     context ={'product': prod, 'product_images': product_images}
     return render(request, 'store/product_detail.html', context)
 
+def user_login(request):
+    context = {}
+    return render(request, 'store/login.html', context)
+
 class ProductViewSet(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
