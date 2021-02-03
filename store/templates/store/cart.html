@@ -11,7 +11,7 @@
                 <br>
                 <table class="table">
                     <tr>
-                        <th><h5>Items: <strong> {{ order.get_cart_items }}</strong></h5></th>
+                        <th><h5>Items: <strong id="total_items"> {{ order.get_cart_items }}</strong></h5></th>
                         <th><h5>Total:<strong> {{ order.get_cart_total }}</strong></h5></th>
                         <th>
                         <a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
@@ -36,14 +36,22 @@
                     <div style="flex:2"><img class="row-image" src={{ item.product.imageURL }}></div>
                     <div style="flex:2"><p>{{ item.product.name }}</p></div>
                     <div style="flex:1"><p>{{ item.product.price }}</p></div>
-                    <div style="flex:1">
-                        <p class="quantity">{{ item.quantity }}</p>
+                    <div style="flex:1" class="{{item.product.id}}">
+                        {% if user.is_authenticated%}
+                            <p class="quantity" id="{{item.product.id}}">{{ item.quantity }}</p>
+
+                        {% else %}
+                        <p class="quantity" id="{{item.product.id}}">{{ item.quantity }}</p>
+
+                        {% endif %}
                         <div class="quantity">
                             <!-- Data- attribute -->
-                            <img data-product="{{ item.product.id }}" data-action="add" class="chg-quantity update-cart" src="{% static  'images/arrow-up.png' %}">
+                            <img data-product="{{ item.product.id }}" data-price="{{ item.product.price }}" data-action="add" class="chg-quantity update-cart" src="{% static  'images/arrow-up.png' %}">
                     
                             <img data-product=" {{ item.product.id }} " data-action = "remove" class="chg-quantity update-cart" src="{% static  'images/arrow-down.png' %}">
                         </div>
+                        <!-- console.log({{ item.id }})
+                        console.log({{ item.product.id }}) -->
                     </div>
                     <div style="flex:1"><p>Rs.{{ item.get_total }}</p></div>
                 </div>

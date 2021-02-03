@@ -12,10 +12,7 @@ from .forms import UserForm,loginForm
 from django import forms
 from django.contrib.auth import authenticate,login,logout
 
-
 # from django.contrib.auth.forms import UserCreationForm
-
-
 # from django.views.decorators.csrf import csrf_exempt
 
 
@@ -26,6 +23,7 @@ def store(request):
     data = cartData(request)
 
     cartItems = data['cartItems']
+
     products = Product.objects.all()
     Trend = Product.objects.filter(status="T")
     # products = product_val
@@ -40,7 +38,7 @@ def store(request):
     # print(all_category_product)
 
 
-    context = {'products':products,'Trend':Trend,'cartItems':cartItems,'UserForm':UserForm(),'all_category_product':all_category_product,}
+    context = {'products':products,'Trend':Trend,'cartItems':cartItems,'UserForm':UserForm(),'all_category_product':all_category_product}
     return render(request, 'store/store.html', context)
 
 def cart(request):
@@ -68,7 +66,7 @@ def updateItem(request):
     data = json.loads(request.body)
     productId = data['productId']
     action = data['action']
-    print(productId,action)
+    # print(productId,action)
 
     customer = request.user.customer
     product  = Product.objects.get(id= productId)
@@ -86,9 +84,15 @@ def updateItem(request):
     if orderItem.quantity <= 0 :
         orderItem.delete()
 
+    # return redirect('store')
+
+    # print("orderItem",orderItem)
+    # print("orderItem",orderItem.quantity )
+
  
     # In order to allow non-dict objects to be serialized set the safe parameter to False.
-    return JsonResponse('Item was added',safe=False)
+    # return JsonResponse('Item was added',safe=False)
+    return JsonResponse({ 'login_quantity':order.get_cart_items,'item_quantity':orderItem.quantity,"productId":productId })
 
 def processOrder(request):
     transaction_id = datetime.datetime.now().timestamp()

@@ -25,6 +25,21 @@
 </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="exampleMod" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- <div class="modal-header"> -->
+        <!-- <h5 class="modal-title" id="exampleModalLabel">Modal title</h5> -->
+        <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+      <!-- /div> -->
+      <div class="modal-body">
+        <p>Item Added to Cart</p>
+      </div>
+      
+    </div>
+  </div>
+</div>
 
 <div class="container my-2" >
     <h1>Trending</h1>
@@ -37,7 +52,7 @@
             <p>Rs.{{ product.price|floatformat:2}}</p>
             <hr>
 
-            <button data-product={{ product.id }} data-action = "add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
+            <button data-product={{ product.id }} data-action = "add" class="btn btn-outline-secondary add-btn update-cart" data-bs-toggle="modal" data-bs-target="#exampleMod">Add to Cart</button>
             <a class="btn btn-outline-success" href="{% url 'product_display' product.id %}">View</a>
         </div>
     </div>
@@ -58,7 +73,7 @@
                 <p>Rs.{{ product.price|floatformat:2}}</p>
                 <hr>
 
-                <button data-product={{ product.id }} data-action = "add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
+                <button data-product={{ product.id }} data-action = "add" onclick="launch_toast()"class="btn btn-outline-secondary add-btn update-cart" data-bs-toggle="modal" data-bs-target="#exampleMod">Add to Cart</button>
                 <a class="btn btn-outline-success" href="{% url 'product_display' product.id %}">View</a>
             </div>
         </div>
