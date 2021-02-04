@@ -1,0 +1,25 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container my-2" >
+    <h1>Your Search</h1>
+<div class="row">
+    {% for product in object_list %}
+    <div class="col-xs-2 col-sm-2 col-md-2 my-2">
+    <img class="thumbnail" src="{{product.imageURL}}">
+        <div class="box-element product">
+            <h6><strong>{{ product.name }}</strong></h6>
+            <p>Rs.{{ product.price|floatformat:2}}</p>
+            <hr>
+
+            <button data-product={{ product.id }} data-action = "add" class="btn btn-outline-secondary add-btn update-cart" data-bs-toggle="modal" data-bs-target="#exampleMod">Add to Cart</button>
+            <a class="btn btn-outline-success" href="{% url 'product_display' product.id %}">View</a>
+        </div>
+    </div>
+
+    {% endfor %}
+ </div>
+</div>
+
+{% endblock %}

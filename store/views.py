@@ -12,6 +12,9 @@ from .forms import UserForm,loginForm
 from django import forms
 from django.contrib.auth import authenticate,login,logout
 
+from django.views.generic import TemplateView, ListView
+from django.db.models import Q # new
+
 # from django.contrib.auth.forms import UserCreationForm
 # from django.views.decorators.csrf import csrf_exempt
 
@@ -168,6 +171,24 @@ def register(request):
 def user_logout(request):
     logout(request)
     return redirect("store")
+
+
+# class SearchResultsView(ListView):
+#     model = City
+#     template_name = 'search_results.html'
+#     queryset = City.objects.filter(name__icontains='Boston') # new
+
+
+class SearchResultsView(ListView):
+    model = Product
+    template_name = 'search_results.html'
+
+    def get_queryset(self): # new
+        query = self.request.GET.get('user_search')
+        object_list = Product.objects.filter(
+            Q(name__icontains=query) | Q(description__icontains=query)
+        )
+        return object_list
 
 
 class ProductViewSet(generics.ListCreateAPIView):
