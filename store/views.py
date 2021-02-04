@@ -105,8 +105,15 @@ def processOrder(request):
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
 
+        #Delete User Order After Checkout
+        customer = request.user.customer
+        order = Order.objects.get(customer=customer )
+        orderItem = OrderItem.objects.filter(order=order).delete()
+
+
     else:
         customer ,order =guestOrder(request,data)
+
 
     total = float(data['form']['total'])
     order.transaction_id = transaction_id
@@ -124,6 +131,8 @@ def processOrder(request):
     state=data['shipping']['state'],
     zipcode=data['shipping']['zipcode'],
     )
+
+
     return JsonResponse('Payment submitted..', safe=False)
 
 
