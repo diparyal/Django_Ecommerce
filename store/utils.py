@@ -1,7 +1,17 @@
 import json
 from .models import *
+import requests
+
+class dotdict(dict):
+    """dot.notation access to dictionary attributes"""
+    __getattr__ = dict.get
+    __setattr__ = dict.__setitem__
+    __delattr__ = dict.__delitem__
+
 
 def cookieCart(request):
+    # product_val = requests.get('http://127.0.0.1:8000/product/').json()
+    # print(product_val)
 
     #Create empty cart for now for non-logged in user
     try:
@@ -19,7 +29,11 @@ def cookieCart(request):
         try:
             cartItems += cart[i]['quantity']
 
-            product = Product.objects.get(id=i)
+            # product = Product.objects.get(id=i)
+            product = dotdict(requests.get('http://127.0.0.1:8000/search_prod/?val={}'.format(i)).json()[0])
+            print(product)
+            # print("dsfdsfd",product['price'])
+
             total = (product.price * cart[i]['quantity'])
 
             order['get_cart_total'] += total
@@ -31,7 +45,8 @@ def cookieCart(request):
                     'id':product.id,
                     'name':product.name,
                     'price':product.price,
-                    'imageURL':product.imageURL,
+                    # 'imageURL':product.imageURL,
+                    'imageURL':product.featured,
                 },
                 'quantity': cart[i]['quantity'],
                 'get_total':total,
@@ -48,10 +63,15 @@ def cartData(request):
     if request.user.is_authenticated:
         customer = request.user.customer
 
-        # customer = request.user
+
+        customer = request.user
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         items = order.orderitem_set.all()
         cartItems = order.get_cart_items
+
+        # order = requests.get('http://127.0.0.1:8000/search_order/')[0].id
+        # items = order.orderitem_set.all()
+        # cartItems = order.get_cart_items
     else:
         cookieData = cookieCart(request)
         cartItems = cookieData['cartItems']
@@ -68,9 +88,7 @@ def guestOrder(request, data):
     cookieData = cookieCart(request)
     items = cookieData['items']
 
-    customer, created = Customer.objects.get_or_create(
-            email=email,
-            )
+    customer, created = Customer.objects.get_or_create(email=email,)
     customer.name = name
     customer.save()
 

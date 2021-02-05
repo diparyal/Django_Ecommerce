@@ -15,6 +15,9 @@ from django.contrib.auth import authenticate,login,logout
 from django.views.generic import TemplateView, ListView
 from django.db.models import Q # new
 
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
+
 # from django.contrib.auth.forms import UserCreationForm
 # from django.views.decorators.csrf import csrf_exempt
 
@@ -22,6 +25,7 @@ from django.db.models import Q # new
 
 def store(request):
     # product_val = requests.get('http://127.0.0.1:8000/product/').json()
+    # print(product_val)
     # product_trend = [item for item in product_val if item['status']=='T']
     data = cartData(request)
 
@@ -200,6 +204,72 @@ class SearchResultsView(ListView):
         return object_list
 
 
+class ProductSearch(generics.ListCreateAPIView):
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = Product.objects.all()
+        username = self.request.query_params.get('val', None)
+        print(username)
+        if username is not None:
+            queryset = queryset.filter(id=username)
+        return queryset
+
+class OrderSearch(generics.ListAPIView):
+    serializer_class = OrderSerializer
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = OrderItem.objects.filter(order=customer)
+        # value = self.request.query_params.get('val', None)
+        
+        if len(queryset) == 0 :
+            queryset = Order.objects.create(customer=customer, complete=False)
+        else:
+            queryset = Order.objects.get(customer=customer)
+        return queryset
+
+# class OrderItemSearch(generics.ListAPIView):
+#     serializer_class = OrderItem
+
+#     def get_queryset(self):
+
+#         # value = self.request.query_params.get('val', None)
+        
+#         value = self.request.query_params.get('val', None)
+#         queryset = OrderItem.objects.filter(order=value)
+#         return queryset
+
+# class ProductSearch(generics.ListAPIView):
+#     serializer_class = ProductSerializer
+
+#     def get_queryset(self):
+#         """
+#         This view should return a list of all the purchases for
+#         the user as determined by the username portion of the URL.
+#         """
+#         pro_id = self.kwargs['pro_id']
+#         return Product.objects.filter(product__id=pro_id)
+
+# class ProductSearch(generics.ListAPIView):
+#     search_fields = ['=id']
+#     filter_backends = (filters.SearchFilter,)
+#     queryset = Product.objects.all()
+#     serializer_class = ProductSerializer
+
+    # queryset = Product.objects.all()
+    # serializer_class = ProductSerializer
+    # filter_backends = [DjangoFilterBackend]
+    # filterset_fields = ['id']
+
+
 class ProductViewSet(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -207,6 +277,7 @@ class ProductViewSet(generics.ListCreateAPIView):
 class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
 
 class OrderViewSet(generics.ListCreateAPIView):
     queryset = Order.objects.all()

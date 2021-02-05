@@ -6,6 +6,9 @@ from . import views
 urlpatterns = [
     path('', views.store,name='store'),
     path('search/', views.SearchResultsView.as_view(), name='search_results'),
+    path('search_prod/', views.ProductSearch.as_view(), name='product_search_api'),
+    path('search_order/', views.OrderSearch.as_view(), name='order_search_api'),
+    # path('search_orderitem/', views.OrderItemSearch.as_view(), name='orderitem_search_api'),
 
     path('login/', views.user_login,name='user_login'),
     path('logout/', views.user_logout,name='user_logout'),

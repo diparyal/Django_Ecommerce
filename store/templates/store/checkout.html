@@ -1,7 +1,8 @@
 {% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
-     <div class="container row">
+     <div class="container">
+        <div class="row">
         <div class="col-lg-6">
             <div class="box-element" id="form-wrapper">
                 <form id="form">
@@ -68,6 +69,7 @@
                 <h5>Items:   {{ order.get_cart_items }}</h5>
                 <h5>Total:   Rs.{{ order.get_cart_total }}</h5>
             </div>
+        </div>
         </div>
     </div>
 

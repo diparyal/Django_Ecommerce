@@ -13,7 +13,7 @@
             <p>Rs.{{ product.price|floatformat:2}}</p>
             <hr>
 
-            <button data-product={{ product.id }} data-action = "add" class="btn btn-outline-secondary add-btn update-cart" data-bs-toggle="modal" data-bs-target="#exampleMod">Add to Cart</button>
+            <button data-product={{ product.id }} data-price={{ product.price }} data-action = "add" class="btn btn-outline-secondary add-btn update-cart" data-bs-toggle="modal" data-bs-target="#exampleMod">Add to Cart</button>
             <a class="btn btn-outline-success" href="{% url 'product_display' product.id %}">View</a>
         </div>
     </div>
