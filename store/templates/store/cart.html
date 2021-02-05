@@ -12,7 +12,7 @@
                 <table class="table">
                     <tr>
                         <th><h5>Items: <strong id="total_items"> {{ order.get_cart_items }}</strong></h5></th>
-                        <th><h5>Total:<strong> {{ order.get_cart_total }}</strong></h5></th>
+                        <th><h5>Total:<strong id="total_price"> {{ order.get_cart_total }}</strong></h5></th>
                         <th>
                         <a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
                         </th>
@@ -48,7 +48,7 @@
                             <!-- Data- attribute -->
                             <img data-product="{{ item.product.id }}" data-price="{{ item.product.price }}" data-action="add" class="chg-quantity update-cart" src="{% static  'images/arrow-up.png' %}">
                     
-                            <img data-product=" {{ item.product.id }} " data-action = "remove" class="chg-quantity update-cart" src="{% static  'images/arrow-down.png' %}">
+                            <img data-product=" {{ item.product.id }} " data-price="{{ item.product.price }}" data-action = "remove" class="chg-quantity update-cart" src="{% static  'images/arrow-down.png' %}">
                         </div>
                         <!-- console.log({{ item.id }})
                         console.log({{ item.product.id }}) -->

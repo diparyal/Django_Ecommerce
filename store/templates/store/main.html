@@ -44,6 +44,7 @@
     var quantity = getCookie('quantity')
     if(quantity == undefined){
       document.cookie = "quantity=" + 0 + ";path=/";
+      // document.cookie = "quantity=" + JSON.stringify({}) + ";path=/";
     }
 
     console.log("cart:"+cart)

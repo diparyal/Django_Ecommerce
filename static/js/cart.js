@@ -7,7 +7,7 @@ for (i = 0; i < updateBtns.length; i++) {
         var productId = this.dataset.product
         var action = this.dataset.action
         var price = this.dataset.price
-        console.log('productId:', productId, 'Action:', action)
+        console.log('productId:', productId, 'Action:', action,"Price:",price)
 
         document.getElementById("my_cart").innerHTML= quantity
 
@@ -25,11 +25,11 @@ function addCookieItem(productId,action,price){
 
     if (action == 'add'){
         if (cart[productId] == undefined){
-            cart[productId] = {'quantity':1}
+            cart[productId] = {'quantity':1,'price':price}
             if (quantity== 0){
                 quantity =1
             }else{
-                quantity = quantity + 1 }
+                quantity = Number(quantity) + 1 }
                 document.cookie = "quantity="+ quantity + ";path=/";
 
             // document.getElementById("my_cart").innerHTML = quantity
@@ -45,7 +45,7 @@ function addCookieItem(productId,action,price){
 
             
             // document.getElementById("my_cart").innerHTML= cart[productId]["quantity"]
-            quantity = parseInt(quantity) + 1
+            quantity = Number(quantity) + 1
             // quantity = quantity + 1
             console.log("quant"+quantity)
             document.cookie = "quantity="+ quantity + ";path=/";
@@ -74,12 +74,17 @@ function addCookieItem(productId,action,price){
         }
     
     }
+    var i,total=0;
+    for (i in cart){
+        total += (cart[i]['price'] * cart[i]['quantity'])
+        }
 
     console.log("quantity:"+quantity)
     console.log("productId:"+productId)
     document.cookie = "cart=" + JSON.stringify(cart) + ";domain=;path=/";
     document.getElementById("my_cart").innerHTML= quantity
     document.getElementById("total_items").innerHTML= quantity
+    document.getElementById("total_price").innerHTML= total
     document.getElementById(`${productId}`.trim()).innerHTML= cart[`${productId}`.trim()]["quantity"]
 
     

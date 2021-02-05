@@ -4,8 +4,9 @@
 
 
 
-<div class="container row ">
-    <div class="my-4 column">
+<div class="container">
+    <div class="row">
+    <div class="col my-4">
 
     <img id="featured" src={{ product.imageURL }}>
 
@@ -21,20 +22,26 @@
         <img id="slideRight" class="arrow" src="{% static 'images/arrow-right.png' %}">
 
     </div>
+</div>
+
+
+    <div class="col my-4 mx-4">
+    <h1>{{product}}</h1>
+        <hr>
+        <h3>${{product.price}}</h3>
+
+        <p>{{product.description}}</p>
+
+        <!-- <input value=1 type="number"> -->
+        <!-- <a class="btn btn-dark" data-product={{ product.id }} data-action = "add" onclick="launch_toast()" data-bs-toggle="modal" data-bs-target="#exampleMod">Add to Cart</a>
+ -->
+ <button data-product={{product.id}} data-action = "add" onclick="launch_toast()"class="btn btn-outline-secondary add-btn update-cart" data-bs-toggle="modal" data-bs-target="#exampleMod">Add to Cart</button>
+    
     </div>
-
-    <div class="my-4 mx-4 column">
-        <h1>{{product}}</h1>
-            <hr>
-            <h3>${{product.price}}</h3>
-
-            <p>{{product.description}}</p>
-
-            <input value=1 type="number">
-            <a class="btn btn-dark" href="#">Add to Cart</a>
     </div>
 
 </div>
+
 
 <script type="text/javascript">
         
@@ -44,7 +51,7 @@
 
     for (var i = 0; i < thumbnails.length; i++) {
             thumbnails[i].addEventListener('mouseover', function () {
-            console.log(activeImages)
+            // console.log(activeImages)
 
             if (activeImages.length > 0) {
                 activeImages[0].classList.remove('active')
