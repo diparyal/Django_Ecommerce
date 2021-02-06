@@ -5,6 +5,7 @@
         <div class="row">
         <div class="col-lg-6">
             <div class="box-element" id="form-wrapper">
+
                 <form id="form">
                     {% csrf_token %}
                     <div id="user-info">
@@ -40,12 +41,13 @@
                     <hr>
                     <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
                 </form>
+
             </div>
 
         <br>
         <div class="box-element hidden" id="payment-info">
             <small>Paypal Options</small>
-            <button id= "make-payment">Make Payment</button>
+            <button id= "make-payment" onclick="Paymentmail()">Make Payment</button>
         </div>
             
         </div>
@@ -96,6 +98,7 @@
     document.getElementById('make-payment').addEventListener('click',function(e){
             submitFormData()
     })
+
 
     function submitFormData(){
         console.log("Payment button clicked")
@@ -151,7 +154,7 @@
             document.cookie ='quantity=' + 0 + ";domain=;path=/" 
         }
 
-        window.location.href = "{% url 'store' %}"
+        window.location.href = "{% url 'user_mail' %}"
     })
     }
 

@@ -11,12 +11,19 @@ from .forms import UserForm,loginForm
 
 from django import forms
 from django.contrib.auth import authenticate,login,logout
+# from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.views.generic import TemplateView, ListView
 from django.db.models import Q # new
 
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
+
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+
+from django.core.mail import EmailMessage
 
 # from django.contrib.auth.forms import UserCreationForm
 # from django.views.decorators.csrf import csrf_exempt
@@ -186,6 +193,13 @@ def user_logout(request):
     return redirect("store")
 
 
+def SendMail(request):    
+    email = EmailMessage('Your Order is Received', 'Thank you for you Order', to=['diparyal22@gmail.com'])
+    email.send()
+    return redirect("store")
+
+
+
 # class SearchResultsView(ListView):
 #     model = City
 #     template_name = 'search_results.html'
@@ -213,39 +227,48 @@ class ProductSearch(generics.ListCreateAPIView):
         by filtering against a `username` query parameter in the URL.
         """
         queryset = Product.objects.all()
+        # To Send Search Request: url/?val=
         username = self.request.query_params.get('val', None)
         print(username)
         if username is not None:
             queryset = queryset.filter(id=username)
         return queryset
 
+
+
 class OrderSearch(generics.ListAPIView):
     serializer_class = OrderSerializer
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+    # login_url = '/login/'
 
     def get_queryset(self):
         """
         Optionally restricts the returned purchases to a given user,
         by filtering against a `username` query parameter in the URL.
         """
-        queryset = OrderItem.objects.filter(order=customer)
+        customer = self.request.user.customer
+        print("customer",customer)
+        queryset = Order.objects.filter(customer=customer)
         # value = self.request.query_params.get('val', None)
+        print(queryset)
         
         if len(queryset) == 0 :
             queryset = Order.objects.create(customer=customer, complete=False)
-        else:
-            queryset = Order.objects.get(customer=customer)
+            return queryset
+            
         return queryset
 
-# class OrderItemSearch(generics.ListAPIView):
-#     serializer_class = OrderItem
+class OrderItemSearch(generics.ListAPIView):
+    serializer_class = OrderItemSerializer
 
-#     def get_queryset(self):
+    def get_queryset(self):
 
-#         # value = self.request.query_params.get('val', None)
+        # value = self.request.query_params.get('val', None)
         
-#         value = self.request.query_params.get('val', None)
-#         queryset = OrderItem.objects.filter(order=value)
-#         return queryset
+        value = self.request.query_params.get('val', None)
+        queryset = OrderItem.objects.filter(order=value)
+        return queryset
 
 # class ProductSearch(generics.ListAPIView):
 #     serializer_class = ProductSerializer

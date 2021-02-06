@@ -59,18 +59,18 @@ def cookieCart(request):
     print({'cartItems':cartItems ,'order':order, 'items':items})       
     return {'cartItems':cartItems ,'order':order, 'items':items}
 
+
 def cartData(request):
     if request.user.is_authenticated:
         customer = request.user.customer
-
-
-        customer = request.user
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         items = order.orderitem_set.all()
         cartItems = order.get_cart_items
 
-        # order = requests.get('http://127.0.0.1:8000/search_order/')[0].id
-        # items = order.orderitem_set.all()
+        # order = requests.get('http://127.0.0.1:8000/search_order/')
+        # print("ORDER",order)
+        # items = requests.get('http://127.0.0.1:8000/search_orderitem/?val={}'.format(order.id))
+        # print("ITEMS",items)
         # cartItems = order.get_cart_items
     else:
         cookieData = cookieCart(request)

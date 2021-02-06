@@ -10,9 +10,9 @@ class Customer(models.Model):
     name = models.CharField(max_length=200, null=True)
     email = models.CharField(max_length=200)
 
-    def __str__(self): 
+    # def __str__(self): 
 
-        return self.name
+    #     return self.user.id
 
     @receiver(post_save, sender=User)
     def update_profile_signal(sender, instance, created, **kwargs):

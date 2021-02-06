@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'store.apps.StoreConfig',
     'inventory.apps.InventoryConfig',
     'rest_framework',
+    # 'authtoken',
 ]
 
 MIDDLEWARE = [
@@ -129,3 +130,11 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/images/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR,'static/images')
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'diparyal22@gmail.com'
+EMAIL_HOST_PASSWORD = 'workhard247'
