@@ -1,6 +1,6 @@
 
 ## Ecommerce Website
-![main](/images/main1.png)
+![main](/images/main.mp4)
 
 ## Cart
 ![cart](/images/cart.png)
