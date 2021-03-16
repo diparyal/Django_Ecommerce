@@ -5,9 +5,6 @@
 ## Cart
 ![cart](/images/cart.png)
 
-## Product View
-![pview](/images/product_view.png)
-
 ## Checkout
 ![checkout](/images/checkout.png)
 
